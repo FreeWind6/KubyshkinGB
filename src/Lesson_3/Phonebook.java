@@ -22,22 +22,22 @@ public class Phonebook {
         logic.add("Алексей", "89780051122");
         logic.add("Михаил", "89770001126");
         logic.add("Диана", "89770101122");
-        System.out.println(logic.get("Диана"));
+        System.out.println(logic.get("Иван"));
     }
 }
 
 class Logic {
     Map<String, Set<String>> map = new HashMap<>();
-    public Set<String> setString;
+    public Set<String> arrTelNum;
 
     public void add(String name, String telNum) {
         if (map.containsKey(name)) {
-            setString = map.get(name);
+            arrTelNum = map.get(name);
         } else {
-            setString = new HashSet<>();
+            arrTelNum = new HashSet<>();
         }
-        setString.add(telNum);
-        map.put(name, setString);
+        arrTelNum.add(telNum);
+        map.put(name, arrTelNum);
     }
 
     public Set<String> get(String name) {
