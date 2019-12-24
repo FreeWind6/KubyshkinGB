@@ -1,5 +1,7 @@
 package Lesson_5.HW;
 
+import java.util.Arrays;
+
 public class HW {
     static final int size = 10000000;
     static final int h = size / 2;
@@ -73,11 +75,17 @@ public class HW {
         }
     }
 
-    private static void calculationCycle(float[] arr) {
+    private synchronized static void calculationCycle(float[] arr) {
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
     }
+
+/*    private synchronized static void calculationCycle2(float[] arr) {
+        for (int i=0; i < arr.length; i++) {
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+        }
+    }*/
 
     private static void divideArray(float[] arr, float[] a1, float[] a2) {
         System.arraycopy(arr, 0, a1, 0, h);
