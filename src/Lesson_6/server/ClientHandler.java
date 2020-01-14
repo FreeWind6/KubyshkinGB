@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ClientHandler {
     private Socket socket;
@@ -26,6 +27,9 @@ public class ClientHandler {
                             String str = in.readUTF();
                             if (str.equals("/end")) {
                                 out.writeUTF("/serverClosed");
+                                server.clients.remove(ClientHandler.this);
+                                System.out.println("Клиент отключился");
+//                                System.out.println(server.clients);
                                 break;
                             }
                             System.out.println("Client: " + str);
