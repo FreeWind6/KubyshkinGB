@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Vector;
 
 public class ServerMain {
-    private Vector<ClientHandler> clients;
+    public Vector<ClientHandler> clients;
 
     public ServerMain() {
         clients = new Vector<>();

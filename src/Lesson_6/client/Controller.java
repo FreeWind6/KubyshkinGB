@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,13 +25,13 @@ public class Controller implements Initializable {
     DataInputStream in;
     DataOutputStream out;
 
-    final String IP_ADPRESS = "localhost";
+    final String IP_ADDRESS = "localhost";
     final int PORT = 8189;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            socket = new Socket(IP_ADPRESS, PORT);
+            socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
@@ -62,6 +63,10 @@ public class Controller implements Initializable {
     public void sendMsg() {
         try {
             out.writeUTF(textField.getText());
+            textField.clear();
+            textField.requestFocus();
+        } catch (SocketException e) {
+            textArea.appendText("Отправка не возможна! Переподключитесь!" + "\n");
             textField.clear();
             textField.requestFocus();
         } catch (IOException e) {
