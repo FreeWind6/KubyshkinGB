@@ -1,34 +1,13 @@
 package Lesson_1.Marathon;
 
+import Lesson_1.Marathon.Competitor.*;
+import Lesson_1.Marathon.Obstacle.*;
+
 public class Main {
     public static void main(String[] args) {
-
-        Course course = new Course(new Cross(80), new Wall(2), new Water(50), new Cross(120));
-        Team team = new Team(new Human("Боб"), new Cat("Барсик"), new Dog("Бобик"));
+        Team team = new Team("Rocket", new Human("Bob"), new Cat("Vaska"), new Dog("Bobik"));
+        Course course = new Course(new Cross(80), new Wall(2), new Wall(1), new Cross(120));
         course.doIt(team);
-        team.showResult();
-
-// Черновик
-
-/*        Course course = new Course();
-        Team team = new Team();
-        course.doIt();
-        team.showResult();*/
-
-
-//Исходники
-/*        Competitor[] competitors = {new Human("Боб"), new Cat("Барсик"), new Dog("Бобик")};
-
-        Obstacle[] course = {new Cross(80), new Wall(2), new Water(50), new Cross(120)};
-        for (Competitor c : competitors) {
-            for (Obstacle o : course) {
-                o.doIt(c);
-                if (!c.isOnDistance()) break;
-            }
-        }
-        for (Competitor c : competitors) {
-            c.info();
-        }*/
+        team.showWinners();
     }
 }
-

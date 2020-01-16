@@ -1,7 +1,6 @@
 package Lesson_1;
 
 public class Test {
-}
 
 //   1
 //    public static void main(String[] args) {
@@ -14,7 +13,16 @@ public class Test {
 //    }
 
 
+
 //---------------------------------------------------
+
+
+
+
+
+
+
+
 
 
 
@@ -27,9 +35,19 @@ public class Test {
 //        } while (i == 3);
 //    }
 
-
+}
 
 //---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -44,6 +62,19 @@ public class Test {
 //            }
 //        }
 //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 4 ---------------------
 //class Test2 {
@@ -74,15 +105,20 @@ public class Test {
 
 
 
+
+
+
+
+
 // 5
-//class Test3 {
-//    public static void main(String[] args) {
-//        int i = 0;
-//        System.out.print(++i);
-//        System.out.print(i++);
-//        System.out.print(i);
-//    }
-//}
+class Test3 {
+    public static void main(String[] args) {
+        int i = 0;
+        System.out.print(++i);
+        System.out.print(i++);
+        System.out.print(i);
+    }
+}
 
 
 
