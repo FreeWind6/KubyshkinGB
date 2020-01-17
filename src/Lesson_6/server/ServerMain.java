@@ -3,10 +3,12 @@ package Lesson_6.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class ServerMain {
     private Vector<ClientHandler> clients;
+    private ArrayList arrayListNick = new ArrayList();
 
     public ServerMain() {
         clients = new Vector<>();
@@ -44,16 +46,18 @@ public class ServerMain {
         }
     }
 
-    public void subscribe(ClientHandler client) {
+    public void subscribe(ClientHandler client, String nick) {
         clients.add(client);
+        arrayListNick.add(nick);
     }
 
-    public void unsubscribe(ClientHandler client) {
+    public void unsubscribe(ClientHandler client, String nick) {
         clients.remove(client);
+        arrayListNick.remove(nick);
     }
 
     public void broadcastMsg(String msg) {
-        for (ClientHandler o: clients) {
+        for (ClientHandler o : clients) {
             o.sendMsg(msg);
         }
     }
@@ -69,6 +73,14 @@ public class ServerMain {
         }
         if (!isNickFound) {
             from.sendMsg("Пользователь " + to + " не найден");
+        }
+    }
+
+    public boolean checkNick(String newNick) {
+        if (arrayListNick.contains(newNick)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
