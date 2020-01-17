@@ -46,8 +46,15 @@ public class ClientHandler {
                                 out.writeUTF("/serverClosed");
                                 break;
                             }
-                            System.out.println("Client: " + str);
-                            server.broadcastMsg(nick + ": " + str);
+                            if (str.startsWith("/w")) {
+                                String to = str.split(" ")[1];
+                                String msg = str.split(" ")[2];
+                                server.privateMsg(ClientHandler.this, to, msg);
+                            } else {
+                                System.out.println("Client: " + str);
+                                server.broadcastMsg(nick + ": " + str);
+                            }
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -74,6 +81,10 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getNick() {
+        return nick;
     }
 
     public void sendMsg(String str) {

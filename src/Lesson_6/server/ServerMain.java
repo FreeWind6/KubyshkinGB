@@ -24,7 +24,7 @@ public class ServerMain {
                 socket = server.accept();
                 System.out.println("Клиент подключился");
                 new ClientHandler(this, socket);
-               // clients.add(new ClientHandler(this, socket));
+                // clients.add(new ClientHandler(this, socket));
             }
 
         } catch (IOException e) {
@@ -55,6 +55,20 @@ public class ServerMain {
     public void broadcastMsg(String msg) {
         for (ClientHandler o: clients) {
             o.sendMsg(msg);
+        }
+    }
+
+    public void privateMsg(ClientHandler from, String to, String msg) {
+        boolean isNickFound = false;
+        for (ClientHandler o : clients) {
+            if (o.getNick().equals(to)) {
+                o.sendMsg("Личное сообщение от: " + from.getNick() + ": " + msg);
+                from.sendMsg("Личное сообщение " + to + ": " + msg);
+                isNickFound = true;
+            }
+        }
+        if (!isNickFound) {
+            from.sendMsg("Пользователь " + to + " не найден");
         }
     }
 }
