@@ -1,5 +1,7 @@
 package Lesson_6.server;
 
+import java.awt.*;
+import java.awt.image.ComponentColorModel;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
