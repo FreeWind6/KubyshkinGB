@@ -4,11 +4,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,8 +16,8 @@ import java.net.Socket;
 
 
 public class Controller {
-    @FXML
-    TextArea textArea;
+/*    @FXML
+    TextArea textArea;*/
 
     @FXML
     TextField textField;
@@ -46,6 +45,27 @@ public class Controller {
 
     @FXML
     ListView<String> clientList;
+
+    @FXML
+    ListView messagesView;
+    String nick = "";
+
+    public void setMsg(String str) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Label message = new Label(str);
+                VBox messageBox = new VBox(message);
+                if (nick != "") {
+                    String[] mass = str.split(":");
+                    if (nick.equalsIgnoreCase(mass[0])) {
+                        messageBox.setAlignment(Pos.CENTER_RIGHT);
+                    }
+                }
+                messagesView.getItems().add(messageBox);
+            }
+        });
+    }
 
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
@@ -80,10 +100,12 @@ public class Controller {
                         while (true) {
                             String str = in.readUTF();
                             if (str.startsWith("/authok")) {
+                                String[] mass = str.split(" ");
+                                nick = mass[1];
                                 setAuthorized(true);
                                 break;
                             } else {
-                                textArea.appendText(str + "\n");
+                                setMsg(str);
                             }
                         }
 
@@ -102,7 +124,7 @@ public class Controller {
                                     }
                                 });
                             } else {
-                                textArea.appendText(str + "\n");
+                                setMsg(str);
                             }
                         }
                     } catch (IOException e) {

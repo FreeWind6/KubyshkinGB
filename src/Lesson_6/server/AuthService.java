@@ -30,6 +30,34 @@ public class AuthService {
         return null;
     }
 
+    public static String insertTable(String who, String whom) {
+        String sql = String.format("", who, whom);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getNick(String nick1, String nick2) {
+        String sql = String.format("", nick1, nick2);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void disconnect() {
         try {
             connection.close();

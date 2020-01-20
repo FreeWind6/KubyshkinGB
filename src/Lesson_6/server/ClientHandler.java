@@ -35,7 +35,7 @@ public class ClientHandler {
                                 String newNick = AuthService.getNickByLoginAndPass(tokes[1], tokes[2]);
                                 if (newNick != null) {
                                     if (!server.isNickBusy(newNick)) {
-                                        sendMsg("/authok");
+                                        sendMsg("/authok " + newNick);
                                         nick = newNick;
                                         server.subscribe(ClientHandler.this);
                                         break;

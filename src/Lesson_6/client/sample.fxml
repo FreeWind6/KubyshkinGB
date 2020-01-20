@@ -16,13 +16,14 @@
     </HBox>
     <HBox VBox.vgrow="ALWAYS">
         <VBox HBox.hgrow="ALWAYS">
-            <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS"/>
+<!--            <TextArea fx:id="textArea" editable="false" VBox.vgrow="ALWAYS"/>-->
+            <ListView fx:id="messagesView" editable="false" VBox.vgrow="ALWAYS" />
             <HBox fx:id="bottomPanel" managed="false" visible="false">
                 <TextField fx:id="textField" onAction="#sendMsg" promptText="Введите текст" HBox.hgrow="ALWAYS"/>
                 <Button fx:id="btn1" onAction="#sendMsg" text="Send"/>
             </HBox>
         </VBox>
-        <ListView fx:id="clientList" managed="false" visible="false"></ListView>
+        <ListView fx:id="clientList" managed="false" visible="false" maxWidth="100"></ListView>
     </HBox>
 </VBox>
 
