@@ -17,6 +17,7 @@ public class AuthService {
     }
 
     public static String getNickByLoginAndPass(String login, String pass) {
+
         String sql = String.format("SELECT nickname FROM main where login = '%s' and password = '%s'", login, pass);
 
         try {
@@ -33,6 +34,20 @@ public class AuthService {
     // заполнить в таблицу (id записи, id того кто блокирует, id того кого блокирует)
     public static String insertTable(String who, String whom) {
         String sql = String.format("INSERT INTO blocklist(id1, id2) VALUES('%s', '%s')", who, whom);
+
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getIdByNickname(String nick) {
+        String sql = String.format("SELECT id FROM main where nickname = '%s'", nick);
 
         try {
             ResultSet rs = stmt.executeQuery(sql);

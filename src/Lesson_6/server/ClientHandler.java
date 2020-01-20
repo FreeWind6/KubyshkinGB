@@ -65,7 +65,9 @@ public class ClientHandler {
                                     //blackList.add(tokens[1]);
 
                                     //Test
-                                    String insertTable = AuthService.insertTable(getNick(), tokens[1]);
+                                    String strGetNick = AuthService.getIdByNickname(getNick());
+                                    String strTokens1 = AuthService.getIdByNickname(tokens[1]);
+                                    AuthService.insertTable(strGetNick, strTokens1);
 
                                     sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
 
@@ -120,7 +122,9 @@ public class ClientHandler {
     }
 
     public boolean checkBlackList(String nick) {
-        String getNick = AuthService.getNick(getNick(), nick);
+        String strGetNickCheck = AuthService.getIdByNickname(getNick());
+        String strTokensCheck = AuthService.getIdByNickname(nick);
+        String getNick = AuthService.getNick(strGetNickCheck, strTokensCheck);
         if (getNick != null) {
             return true;
         }
