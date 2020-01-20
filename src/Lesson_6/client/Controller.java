@@ -1,8 +1,10 @@
 package Lesson_6.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -42,6 +44,9 @@ public class Controller {
 
     private boolean isAuthorized;
 
+    @FXML
+    ListView<String> clientList;
+
     public void setAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
         if (!isAuthorized) {
@@ -49,11 +54,15 @@ public class Controller {
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(false);
+            clientList.setVisible(false);
+            clientList.setManaged(false);
         } else {
             upperPanel.setVisible(false);
             upperPanel.setManaged(false);
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
+            clientList.setVisible(true);
+            clientList.setManaged(true);
         }
     }
 
@@ -80,8 +89,21 @@ public class Controller {
 
                         while (true) {
                             String str = in.readUTF();
-                            if (str.equals("/serverClosed")) break;
-                            textArea.appendText(str + "\n");
+                            if (str.equals("/serverclosed")) break;
+                            if (str.startsWith("/clientlist")) {
+                                String[] tokens = str.split(" ");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        clientList.getItems().clear();
+                                        for (int i = 1; i < tokens.length; i++) {
+                                            clientList.getItems().add(tokens[i]);
+                                        }
+                                    }
+                                });
+                            } else {
+                                textArea.appendText(str + "\n");
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -128,6 +150,17 @@ public class Controller {
             out.writeUTF("/auth " + loginField.getText() + " " + passwordField.getText());
             loginField.clear();
             passwordField.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void Dispose() {
+        System.out.println("Отправляем сообщение на сервер о завершении работы");
+        try {
+            if (out != null) {
+                out.writeUTF("/end");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

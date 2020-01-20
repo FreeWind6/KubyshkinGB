@@ -3,12 +3,10 @@ package Lesson_6.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class ServerMain {
     private Vector<ClientHandler> clients;
-    private ArrayList arrayListNick = new ArrayList();
 
     public ServerMain() {
         clients = new Vector<>();
@@ -46,41 +44,54 @@ public class ServerMain {
         }
     }
 
-    public void subscribe(ClientHandler client, String nick) {
+    public void subscribe(ClientHandler client) {
         clients.add(client);
-        arrayListNick.add(nick);
+        broadcastClientList();
     }
 
-    public void unsubscribe(ClientHandler client, String nick) {
+    public void unsubscribe(ClientHandler client) {
         clients.remove(client);
-        arrayListNick.remove(nick);
+        broadcastClientList();
     }
 
-    public void broadcastMsg(String msg) {
+    public void broadcastMsg(ClientHandler from, String msg) {
         for (ClientHandler o : clients) {
-            o.sendMsg(msg);
-        }
-    }
-
-    public void privateMsg(ClientHandler from, String to, String msg) {
-        boolean isNickFound = false;
-        for (ClientHandler o : clients) {
-            if (o.getNick().equals(to)) {
-                o.sendMsg("Личное сообщение от: " + from.getNick() + ": " + msg);
-                from.sendMsg("Личное сообщение " + to + ": " + msg);
-                isNickFound = true;
+            if (!o.checkBlackList(from.getNick())) {
+                o.sendMsg(msg);
             }
         }
-        if (!isNickFound) {
-            from.sendMsg("Пользователь " + to + " не найден");
-        }
     }
 
-    public boolean checkNick(String newNick) {
-        if (arrayListNick.contains(newNick)) {
-            return true;
-        } else {
-            return false;
+    public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
+        for (ClientHandler o : clients) {
+            if (o.getNick().equals(nickTo)) {
+                o.sendMsg("from " + from.getNick() + ": " + msg);
+                from.sendMsg("to " + nickTo + ": " + msg);
+                return;
+            }
+        }
+        from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
+    }
+
+
+    public boolean isNickBusy(String nick) {
+        for (ClientHandler o : clients) {
+            if (o.getNick().equals(nick)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void broadcastClientList() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("/clientlist ");
+        for (ClientHandler o : clients) {
+            sb.append(o.getNick() + " ");
+        }
+        String out = sb.toString();
+        for (ClientHandler o : clients) {
+            o.sendMsg(out);
         }
     }
 }
