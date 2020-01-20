@@ -62,8 +62,14 @@ public class ClientHandler {
                                 }
                                 if (str.startsWith("/blacklist ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                     String[] tokens = str.split(" ");
-                                    blackList.add(tokens[1]);
+                                    //blackList.add(tokens[1]);
+
+                                    //Test
+                                    String insertTable = AuthService.insertTable(getNick(), tokens[1]);
+
                                     sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
+
+
                                 }
                             } else {
                                 server.broadcastMsg(ClientHandler.this, nick + ": " + str);
@@ -114,6 +120,10 @@ public class ClientHandler {
     }
 
     public boolean checkBlackList(String nick) {
-        return blackList.contains(nick);
+        String getNick = AuthService.getNick(getNick(), nick);
+        if (getNick != null) {
+            return true;
+        }
+        return false;
     }
 }
