@@ -15,7 +15,7 @@ public class ClientHandler {
     private DataOutputStream out;
     private ServerMain server;
     private String nick;
-    private List<String> blackList;
+//    private List<String> blackList;
 
     public ClientHandler(ServerMain server, Socket socket) {
         try {
@@ -23,7 +23,7 @@ public class ClientHandler {
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            this.blackList = new ArrayList<>();
+//            this.blackList = new ArrayList<>();
 
             new Thread(new Runnable() {
                 @Override
@@ -64,16 +64,16 @@ public class ClientHandler {
                                 }
                                 if (str.startsWith("/blacklist ")) { // /w nick3 lsdfhldf sdkfjhsdf wkerhwr
                                     String[] tokens = str.split(" ");
+                                    if (tokens[1].equals(getNick())) {
+                                        sendMsg("Вы не можете заблокировать самого себя!");
+                                    } else {
+                                        String strGetNick = AuthService.getIdByNickname(getNick());
+                                        String strTokens1 = AuthService.getIdByNickname(tokens[1]);
+                                        AuthService.insertTable(strGetNick, strTokens1);
+
+                                        sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
+                                    }
                                     //blackList.add(tokens[1]);
-
-                                    //Test
-                                    String strGetNick = AuthService.getIdByNickname(getNick());
-                                    String strTokens1 = AuthService.getIdByNickname(tokens[1]);
-                                    AuthService.insertTable(strGetNick, strTokens1);
-
-                                    sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
-
-
                                 }
                             } else {
                                 server.broadcastMsg(ClientHandler.this, nick + ": " + str);
@@ -115,9 +115,9 @@ public class ClientHandler {
         }
     }
 
-    public List<String> getBlackList() {
+/*    public List<String> getBlackList() {
         return blackList;
-    }
+    }*/
 
     public String getNick() {
         return nick;
