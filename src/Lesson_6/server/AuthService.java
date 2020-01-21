@@ -31,9 +31,8 @@ public class AuthService {
         return null;
     }
 
-    // заполнить в таблицу (id записи, id того кто блокирует, id того кого блокирует)
     public static String insertTable(String who, String whom) {
-        String sql = String.format("INSERT INTO blocklist(id1, id2) VALUES('%s', '%s')", who, whom);
+        String sql = String.format("INSERT INTO blocklist(who, whom) VALUES('%s', '%s')", who, whom);
 
         try {
             ResultSet rs = stmt.executeQuery(sql);
@@ -46,7 +45,7 @@ public class AuthService {
         return null;
     }
 
-    public static String getIdByNickname(String nick) {
+    public static String getIdByNicknameFromMain(String nick) {
         String sql = String.format("SELECT id FROM main where nickname = '%s'", nick);
 
         try {
@@ -60,10 +59,8 @@ public class AuthService {
         return null;
     }
 
-    // вывести id записи где челок который заблочик = nick1 и человек которого заблочили = nick2.
-    // если выведится не null то запись существует
-    public static String getNick(String nick1, String nick2) {
-        String sql = String.format("SELECT id FROM blocklist WHERE id1='%s' and id2='%s'", nick1, nick2);
+    public static String getIdByNick1AndNick2FromBlocklist(String who, String whom) {
+        String sql = String.format("SELECT id FROM blocklist WHERE who='%s' and whom='%s'", who, whom);
 
         try {
             ResultSet rs = stmt.executeQuery(sql);

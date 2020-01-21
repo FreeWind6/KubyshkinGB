@@ -1,13 +1,9 @@
 package Lesson_6.server;
 
-import java.awt.*;
-import java.awt.image.ComponentColorModel;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientHandler {
     private Socket socket;
@@ -67,8 +63,8 @@ public class ClientHandler {
                                     if (tokens[1].equals(getNick())) {
                                         sendMsg("Вы не можете заблокировать самого себя!");
                                     } else {
-                                        String strGetNick = AuthService.getIdByNickname(getNick());
-                                        String strTokens1 = AuthService.getIdByNickname(tokens[1]);
+                                        String strGetNick = AuthService.getIdByNicknameFromMain(getNick());
+                                        String strTokens1 = AuthService.getIdByNicknameFromMain(tokens[1]);
                                         AuthService.insertTable(strGetNick, strTokens1);
 
                                         sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
@@ -124,9 +120,9 @@ public class ClientHandler {
     }
 
     public boolean checkBlackList(String nick) {
-        String strGetNickCheck = AuthService.getIdByNickname(getNick());
-        String strTokensCheck = AuthService.getIdByNickname(nick);
-        String getNick = AuthService.getNick(strGetNickCheck, strTokensCheck);
+        String strGetNickCheck = AuthService.getIdByNicknameFromMain(getNick());
+        String strTokensCheck = AuthService.getIdByNicknameFromMain(nick);
+        String getNick = AuthService.getIdByNick1AndNick2FromBlocklist(strGetNickCheck, strTokensCheck);
         if (getNick != null) {
             return true;
         }
