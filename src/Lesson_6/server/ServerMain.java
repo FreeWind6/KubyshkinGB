@@ -65,9 +65,14 @@ public class ServerMain {
     public void sendPersonalMsg(ClientHandler from, String nickTo, String msg) {
         for (ClientHandler o : clients) {
             if (o.getNick().equals(nickTo)) {
-                o.sendMsg("from " + from.getNick() + ": " + msg);
-                from.sendMsg("to " + nickTo + ": " + msg);
-                return;
+                if (!o.checkBlackList(from.getNick())) {
+                    o.sendMsg(from.getNick() + ":" + " from " + nickTo + ": " + msg);
+                    from.sendMsg(from.getNick() + ":" + " to " + nickTo + ": " + msg);
+                    return;
+                } else {
+                    from.sendMsg("Пользователь " + nickTo + " занес вас в черный список");
+                    return;
+                }
             }
         }
         from.sendMsg("Клиент с ником " + nickTo + " не найден в чате");
