@@ -65,9 +65,14 @@ public class ClientHandler {
                                     } else {
                                         String strGetNick = AuthService.getIdByNicknameFromMain(getNick());
                                         String strTokens1 = AuthService.getIdByNicknameFromMain(tokens[1]);
-                                        AuthService.insertTable(strGetNick, strTokens1);
+                                        if (strTokens1 != null) {
+                                            String insertTable = AuthService.insertTable(strGetNick, strTokens1);
+                                            sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
+                                        } else {
+                                            sendMsg("Пользователя " + tokens[1] + " нет в базе!");
+                                        }
 
-                                        sendMsg("Вы добавили пользователя  " + tokens[1] + " в черный список!");
+
                                     }
                                     //blackList.add(tokens[1]);
                                 }
